@@ -1,8 +1,9 @@
-{% set version = "0.9.4.post1" %}
 {% set name = "sanic-plugins-framework" %}
+{% set version = "0.9.4.post1" %}
+
 
 package:
-  name: {{ name }}
+  name: {{ name|lower }}
   version: {{ version }}
 
 source:
@@ -11,26 +12,30 @@ source:
 
 build:
   number: 0
-  script: {{ PYTHON }} -m pip install . --no-deps --ignore-installed -vv
-  skip: true  # [py<36]
+  noarch: python
+  script: {{ PYTHON }} -m pip install . -vv
 
 requirements:
   host:
-    - python
     - pip
-
+    - python
   run:
     - python
-    - setuptools
     - sanic >=18.12.0
+    - setuptools >=40.0
 
 test:
   imports:
     - spf
+    - spf.plugins
+  commands:
+    - pip check
+  requires:
+    - pip
 
 about:
   home: https://github.com/ashleysommer/sanicpluginsframework
-  summary: A lightweight python library aimed at making it as simple as possible to build plugins for the Sanic Async HTTP Server
+  summary: Doing all of the boilerplate to create a Sanic Plugin, so you don't have to.
   license: MIT
   license_file: LICENSE.txt
 
